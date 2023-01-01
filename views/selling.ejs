@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SELLING</title>
+    <style>
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #reader {
+            width:600px;
+        }
+        #result{
+            text-align: center;
+            font: size 1.5em; 
+        }
+
+    </style>
+     <script src="html5-qrcode.min.js"></script>
+</head>
+<body>
+    <p> EMAIL : <%=email%></p>
+        <main>
+            <div id="reader"></div>
+            <div id="result"></div>
+        </main>
+
+        <form action="/scan_product_storing" method ="post">
+            <input type="text" id="product_id" name="product_id" placeholder="product id">
+            <br><br>
+            <input type="number" id="quanitity" name="product_quanitity" placeholder="quanitity">
+            <br><br>
+            <input type="text" id="category" name="product_id" placeholder="product category">
+            <br><br>
+            <button type="submit" id="submit" > store</button>
+        </form>
+
+    <script>
+             const scanner =  new  Html5QrcodeScanner('reader',{
+                qrbox:{
+
+                    width:250,
+                    height:250
+                },
+                fps:20,
+             });
+             var num =1;
+             scanner.render(success,error)
+             function success(result){
+               // console.log(result)
+                document.getElementById('product_id').value = `${result}`;
+                scanner.clear();
+                        
+
+
+
+              //  document.getElementById("quanitity").innerHTML=num++;
+
+             }
+             function error(err)
+             {
+                console.error(err);
+             }
+    </script>
+</body>
+</html>

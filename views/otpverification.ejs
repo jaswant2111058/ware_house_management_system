@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP VERIFICATION</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="/otpverification" method="post">
+        <h3>
+         OTP HAS BEEN SEND  To   
+        </h3>
+        <input type="text" id="email" name="email" readonly>
+        <br>
+        <br>
+        <p>ENTER THE OTP</p>
+        <input type="text" name="otp" placeholder="OTP"><br><br>
+        <button type="submit">SUBMIT</button>
+        <script>
+            const email = "<%=email%>";
+            document.getElementById("email").value = email
+
+        </script>
+
+    </form>
+</body>
+</html>

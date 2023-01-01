@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP VERIFICATION</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="/fov" method="post">
+        <h3>
+         OTP HAS BEEN SEND  To   
+        </h3>
+        <input type="text" id="email" name="email" readonly>
+        <br>
+        <br>
+        <p>ENTER THE OTP</p>
+        <input type="text" name="otp" placeholder="OTP" required><br><br>
+        <input type="text" name="password" id="password" placeholder="password" required><br><br>
+        <input type="text" name="repassword" id="repassword" placeholder="repassword" required><br><br>
+        <button type="submit">SUBMIT</button>
+        <script>
+            const email = "<%=email%>";
+            document.getElementById("email").value = email
+            const password= document.getElementById("password").value
+            const repassword= document.getElementById("repassword").value
+        
+            
+                if(password!==repassword)
+                { 
+                    alert("re-enter password in not matching");
+                }
+            
+        </script>
+
+    </form>
+</body>
+</html>
