@@ -22,9 +22,9 @@ app.use(cookiejk());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 var nodemailer = require('nodemailer');
-const { config } = require('dotenv');
-let otpsend ="";
-let useremail=0;
+//const { config } = require('dotenv');
+let otpsend =process.env.OTP;
+let useremail=process.env.EMAIL;
 
 //--------------------------mail sending function----------------------------------------
 function sendmail( email)
@@ -322,7 +322,7 @@ app.post("/fov",async(req,res)=>{
     }
     
    const data= await schema.updateOne({user_email:useremail},{ product_id:req.body.id,product_price :req.body.price, product_quantity : req.body.quantity});
-       res.redirect("/scan_product_storing")
+     res.send(data) // res.redirect("/scan_product_storing")
     
 })
   

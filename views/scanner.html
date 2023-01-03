@@ -24,7 +24,7 @@
 
     </style>
      <script src="html5-qrcode.min.js"></script>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
 <body>
@@ -41,27 +41,25 @@
 
             
         
-      PRODUCT ID:  <input type="text" id="store" required><br><br>
-    PRICE: <input type="number" id="price" required> <br><br>
-  QUANITITY:  <input type="number" id="quanitity" required><br><br>
-  <button onclick="add()" id="add"> ADD </button>
+    
   <button onclick="out()" id="show"> SHOW </button>
 
 <br><br>
 
-<form action="/product_storing" method="post">
-      <p name="id" id="id"></p><br><br>
-      <p name="price" id="pris"></p><br><br>
-      <p name="quanitity" id="qanitity"></p><br><br>
-      <button type="submit">SAVE</button>
-</form>
+
+     PRODUCT ID:  <input type="text" name="id" id="store" required><br><br>
+    PRICE: <input type="number" id="price" name="price" required> <br><br>
+  QUANITITY:  <input type="number" id="quanitity" name="quanitity" required><br><br>
+  <button onclick="add()" id="add"> ADD </button>
+      
       
        
      
-
-    
+<p name="id" id="id"></p><br><br>
+<p name="price" id="pris"></p><br><br>
+<p name="quanitity" id="qanitity"></p><br><br>
+<button onclick="save()" id="add"> SAVE </button>
       <script>
-
              const scanner =  new  Html5QrcodeScanner('reader',{
                 qrbox:{
 
@@ -94,12 +92,10 @@
                     document.getElementById("price").value="";
                     var quanitity = document.getElementById("quanitity").value;
                     document.getElementById("quanitity").value="";
-                     array_id[i]=id;
-                     array_price[i]=price;
-                     array_quanitity[i]=quanitity;
-                     document.getElementById("qanitity").value=array_quanitity
-                     document.getElementById("pris").value=array_price
-                     document.getElementById("id").value= array_id
+                     id[i]=id;
+                     price[i]=price;
+                    quanitity[i]=quanitity;
+                    
                     i++;
                }
                let t=i;
@@ -109,25 +105,26 @@
                {
 
 
-               console.log(  array_id[t],array_price[t], array_quanitity[t]
+               console.log(  id[t],price[t],quanitity[t]
                )}
                }
-        
+         
                function save()
                 {
-                    $.ajax({
-                      url: "/product_storing",
-                      type: "POST",
-                      data: {
-                        id: array_id[0],
-                        print: array_price[0],
-                        quanitity: array_quanitity[0],
-                      },
-                    });
-                   
-            //window.location.href=`/product_storing?id= ${array_id}&price=${array_price}&quanitity=${array_quanitity}`
-                }
-           // $('/scan_product_storing').attr({"href" : '/scan_product_storing?id=' + array_id+"&price"+array_price+"&quanitity"+array_quanitity});
+                    axios({
+  method: 'post',
+  url: '/product_storing',
+  data: {
+    id: array_id,
+    price:array_price,
+    quanitity:array_quanitity
+  }
+});
+                     }   // axios.post("https://product_storing({'id[]': array_id,'price[]': price,'quanitity[]':array_quanitity})")
+          //   //window.location.href=`/product_storing?id= ${array_id}&price=${array_price}&quanitity=${array_quanitity}`
+          //       }
+       //    $('/scan_product_storing').attr({"href" : '/scan_product_storing?id=' + array_id+"&price"+array_price+"&quanitity"+array_quanitity});
+     
                 
     </script>
     </body>

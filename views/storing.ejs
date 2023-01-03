@@ -24,7 +24,7 @@
 
     </style>
      <script src="html5-qrcode.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
 <body>
@@ -81,20 +81,20 @@
                 console.error(err);
                  }
                 var i=0;
-                let array_id = [];
-                let array_price=[];
-                let array_quanitity=[];
+                let id = [];
+                let price=[];
+                let quanitity=[];
                 function add()
                {    
-                    var id = document.getElementById("store").value;
+                    var idjs = document.getElementById("store").value;
                     document.getElementById("store").value="";
-                    var price = document.getElementById("price").value;
+                    var pricejs = document.getElementById("price").value;
                     document.getElementById("price").value="";
-                    var quanitity = document.getElementById("quanitity").value;
+                    var quanitityjs = document.getElementById("quanitity").value;
                     document.getElementById("quanitity").value="";
-                     array_id[i]=id;
-                     array_price[i]=price;
-                     array_quanitity[i]=quanitity;
+                     id[i]=idjs;
+                     price[i]=pricejs;
+                     quanitity[i]=quanitityjs;
                     
                     i++;
                }
@@ -105,17 +105,39 @@
                {
 
 
-               console.log(  array_id[t],array_price[t], array_quanitity[t]
+               console.log( id[t],price[t],quanitity[t]
                )}
                }
          
                function save()
                 {
-                    axios.post("https://product_storing({'id[]': array_id,'price[]': price,'quanitity[]':array_quanitity})")
-                } 
+                  let xhr = new XMLHttpRequest();
+xhr.open("POST", "/product_storing");
+xhr.setRequestHeader("Accept", "application/json");
+xhr.setRequestHeader("Content-Type", "application/json");
+
+xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4) {
+    console.log(xhr.status);
+    console.log(xhr.responseText);
+  }};
+
+let data = {
+  "Id": 78912,
+  "Customer": "Jason Sweet",
+  "Quantity": 1,
+  "Price": 18.00
+};
+
+xhr.send(data);
+
+
+                 
+                   }   // axios.post("https://product_storing({'id[]': array_id,'price[]': price,'quanitity[]':array_quanitity})")
           //   //window.location.href=`/product_storing?id= ${array_id}&price=${array_price}&quanitity=${array_quanitity}`
           //       }
        //    $('/scan_product_storing').attr({"href" : '/scan_product_storing?id=' + array_id+"&price"+array_price+"&quanitity"+array_quanitity});
+     
                 
     </script>
     </body>
