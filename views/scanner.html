@@ -86,46 +86,45 @@
                 let array_quanitity=[];
                 function add()
                {    
-                    var id = document.getElementById("store").value;
+                    var id_ = document.getElementById("store").value;
                     document.getElementById("store").value="";
-                    var price = document.getElementById("price").value;
+                    var price_ = document.getElementById("price").value;
                     document.getElementById("price").value="";
-                    var quanitity = document.getElementById("quanitity").value;
+                    var quanitity_ = document.getElementById("quanitity").value;
                     document.getElementById("quanitity").value="";
-                     id[i]=id;
-                     price[i]=price;
-                    quanitity[i]=quanitity;
+                    array_id[i]=id_;
+                    array_price[i]=price_;
+                    array_quanitity[i]=quanitity_;
                     
                     i++;
                }
                let t=i;
-               function out()
-               {
-               while(t--)
-               {
-
-
-               console.log(  id[t],price[t],quanitity[t]
-               )}
-               }
+               
          
                function save()
                 {
-                    axios({
-  method: 'post',
-  url: '/product_storing',
-  data: {
-    id: array_id,
-    price:array_price,
-    quanitity:array_quanitity
-  }
-});
-                     }   // axios.post("https://product_storing({'id[]': array_id,'price[]': price,'quanitity[]':array_quanitity})")
-          //   //window.location.href=`/product_storing?id= ${array_id}&price=${array_price}&quanitity=${array_quanitity}`
-          //       }
-       //    $('/scan_product_storing').attr({"href" : '/scan_product_storing?id=' + array_id+"&price"+array_price+"&quanitity"+array_quanitity});
-     
-                
+                    const id = JSON.stringify(array_id);
+                    const price = JSON.stringify(array_price);
+                    const quanitity = JSON.stringify(array_quanitity);
+                        console.log(id)
+                        console.log(price)
+                        console.log(quanitity)
+                        let option={
+                            method:"POST",
+                            headers:{ 
+                                "Content-type":"application/json"
+
+                            },
+                            body:{
+                                product_id:id,
+                                product_price:price,
+                                product_quantity:quanitity
+
+                            },
+                        }
+                        fetch('/product_storing',option)
+                          }   
+                  
     </script>
     </body>
     </html>

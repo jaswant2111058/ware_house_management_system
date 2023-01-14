@@ -23,7 +23,7 @@ const userschema=new mongoose.Schema({
     product_price:{
         type:Array,
     },
-    product_quanitity:{
+    product_quantity:{
         type:Array,
     }
     

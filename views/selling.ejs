@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SELLING</title>
+    <title>QR CODE READER</title>
     <style>
+        body{
+            text-align: center;
+        }
         main {
             display: flex;
             justify-content: center;
             align-items: center;
         }
         #reader {
-            width:600px;
+            width: 400px;
         }
         #result{
             text-align: center;
@@ -21,25 +24,42 @@
 
     </style>
      <script src="html5-qrcode.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 <body>
-    <p> EMAIL : <%=email%></p>
+
+    
+
         <main>
             <div id="reader"></div>
             <div id="result"></div>
         </main>
+        <br><br>
 
-        <form action="/scan_product_storing" method ="post">
-            <input type="text" id="product_id" name="product_id" placeholder="product id">
-            <br><br>
-            <input type="number" id="quanitity" name="product_quanitity" placeholder="quanitity">
-            <br><br>
-            <input type="text" id="category" name="product_id" placeholder="product category">
-            <br><br>
-            <button type="submit" id="submit" > store</button>
-        </form>
+        
 
-    <script>
+            
+        
+    
+  <button onclick="out()" id="show"> SHOW </button>
+
+<br><br>
+
+
+     PRODUCT ID:  <input type="text" name="id" id="store" required><br><br>
+    PRICE: <input type="number" id="price" name="price" required> <br><br>
+  QUANITITY:  <input type="number" id="quanitity" name="quanitity" required><br><br>
+  <button onclick="add()" id="add"> ADD </button>
+      
+      
+       
+     
+<p name="id" id="id"></p><br><br>
+<p name="price" id="pris"></p><br><br>
+<p name="quanitity" id="qanitity"></p><br><br>
+<button onclick="save()" id="add"> SAVE </button>
+      <script>
              const scanner =  new  Html5QrcodeScanner('reader',{
                 qrbox:{
 
@@ -48,23 +68,89 @@
                 },
                 fps:20,
              });
-             var num =1;
+             
              scanner.render(success,error)
              function success(result){
                // console.log(result)
-                document.getElementById('product_id').value = `${result}`;
-                scanner.clear();
+                document.getElementById('store').value = `${result}`;
+              
+
+               }
+                function error(err)
+                 {
+                console.error(err);
+                 }
+                var i=0;
+                let array_id = [];
+                let array_price=[];
+                let array_quanitity=[];
+                function add()
+               {    
+                    var id_ = document.getElementById("store").value;
+                    document.getElementById("store").value="";
+                    var price_ = document.getElementById("price").value;
+                    document.getElementById("price").value="";
+                    var quanitity_ = document.getElementById("quanitity").value;
+                    document.getElementById("quanitity").value="";
+                     id[i]=id_;
+                     price[i]=price_;
+                    quanitity[i]=quanitity_;
+                    
+                    i++;
+               }
+               let t=i;
+               function out()
+               {
+            
+{               
+
+
+               console.log(  id[0],price[0],quanitity[0]
+               )}
+               }
+         
+               function save()
+                {
+
+                        let option={
+                            method:"POST",
+                            headers:{ 
+                                "Content-type":"application/json"
+
+                            },
+                            body:JSON.stringify(
+                                id,
+                                price,
+                                quanitity
+                            ),
+                        }
+
+                        fetch('/product_storing',option)
                         
 
 
-
-              //  document.getElementById("quanitity").innerHTML=num++;
-
-             }
-             function error(err)
-             {
-                console.error(err);
-             }
+                                           
+                  
+                  
+                  
+                                        }   // axios.post("https://product_storing({'id[]': array_id,'price[]': price,'quanitity[]':array_quanitity})")
+          //   //window.location.href=`/product_storing?id= ${array_id}&price=${array_price}&quanitity=${array_quanitity}`
+          //       }
+       //    $('/scan_product_storing').attr({"href" : '/scan_product_storing?id=' + array_id+"&price"+array_price+"&quanitity"+array_quanitity});
+     
+                 //                     axios({
+                                            // method: 'post',
+                                            // url: '/product_storing',
+                                            // data: {
+                                            //     id: array_id,
+                                            //     price:array_price,
+                                            //     quanitity:array_quanitity
+                                            // }
+                                            // });
+                  
     </script>
-</body>
-</html>
+    </body>
+    </html>
+
+   
+   

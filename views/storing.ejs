@@ -47,18 +47,27 @@
 <br><br>
 
 
-     PRODUCT ID:  <input type="text" name="id" id="store" required><br><br>
-    PRICE: <input type="number" id="price" name="price" required> <br><br>
-  QUANITITY:  <input type="number" id="quanitity" name="quanitity" required><br><br>
+     PRODUCT ID:  <input type="text" name="product_id" id="id" required><br><br>
+    PRICE: <input type="text" id="price" name="product_price" required> <br><br>
+  QUANITITY:  <input type="text" id="quanitity" name="product_quantity" required><br><br>
+  
+
+  <button onclick="save()" id="add"> SAVE </button>
+
   <button onclick="add()" id="add"> ADD </button>
       
-      
+  <form action="/product_storing" method="post">
+    PRODUCT ID:  <input type="text" name="product_id" id="id2" required><br><br>
+   PRICE: <input type="text" id="price2" name="product_price" required> <br><br>
+ QUANITITY:  <input type="text" id="quanitity2" name="product_quantity" required><br><br>
+ <button type="submit" id="add"> submit </button>
+
+</form>
        
      
 <p name="id" id="id"></p><br><br>
 <p name="price" id="pris"></p><br><br>
 <p name="quanitity" id="qanitity"></p><br><br>
-<button onclick="save()" id="add"> SAVE </button>
       <script>
              const scanner =  new  Html5QrcodeScanner('reader',{
                 qrbox:{
@@ -81,64 +90,56 @@
                 console.error(err);
                  }
                 var i=0;
-                let id = [];
-                let price=[];
-                let quanitity=[];
+                let array_id = [];
+                let array_price=[];
+                let array_quanitity=[];
                 function add()
                {    
-                    var idjs = document.getElementById("store").value;
-                    document.getElementById("store").value="";
-                    var pricejs = document.getElementById("price").value;
+                    var id_ = document.getElementById("id").value;
+                    document.getElementById("id").value="";
+                    var price_ = document.getElementById("price").value;
                     document.getElementById("price").value="";
-                    var quanitityjs = document.getElementById("quanitity").value;
+                    var quanitity_ = document.getElementById("quanitity").value;
                     document.getElementById("quanitity").value="";
-                     id[i]=idjs;
-                     price[i]=pricejs;
-                     quanitity[i]=quanitityjs;
+                    array_id[i]=id_;
+                    array_price[i]=price_;
+                    array_quanitity[i]=quanitity_;
                     
                     i++;
                }
                let t=i;
-               function out()
-               {
-               while(t--)
-               {
-
-
-               console.log( id[t],price[t],quanitity[t]
-               )}
-               }
+               
          
                function save()
                 {
-                  let xhr = new XMLHttpRequest();
-xhr.open("POST", "/product_storing");
-xhr.setRequestHeader("Accept", "application/json");
-xhr.setRequestHeader("Content-Type", "application/json");
+                    const id = JSON.stringify(array_id);
+                    const price = JSON.stringify(array_price);
+                    const quanitity = JSON.stringify(array_quanitity);
+                    document.getElementById("id2").value=id;
+                    document.getElementById("price2").value=price;
+                    document.getElementById("quanitity2").value=quanitity;
+                    
+                        console.log(id)
+                        console.log(price)
+                        console.log(quanitity)
+                        let option={
+                            method:"POST",
+                            headers:{ 
+                                "Content-type":"application/json"
 
-xhr.onreadystatechange = function () {
-  if (xhr.readyState === 4) {
-    console.log(xhr.status);
-    console.log(xhr.responseText);
-  }};
+                            },
+                            body:
 
-let data = {
-  "Id": 78912,
-  "Customer": "Jason Sweet",
-  "Quantity": 1,
-  "Price": 18.00
-};
-
-xhr.send(data);
-
-
-                 
-                   }   // axios.post("https://product_storing({'id[]': array_id,'price[]': price,'quanitity[]':array_quanitity})")
-          //   //window.location.href=`/product_storing?id= ${array_id}&price=${array_price}&quanitity=${array_quanitity}`
-          //       }
-       //    $('/scan_product_storing').attr({"href" : '/scan_product_storing?id=' + array_id+"&price"+array_price+"&quanitity"+array_quanitity});
-     
-                
+                                queryString.stringify({product_id:id,
+                                product_price:price,
+                                product_quantity:quanitity
+})
+                                
+                            
+                        }
+                        fetch('/product_storing',option)
+                          }   
+                  
     </script>
     </body>
     </html>

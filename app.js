@@ -271,7 +271,7 @@ app.post("/fov",async(req,res)=>{
     if(!semail)
     {
     try{
-      const detail= {user_name:req.user.displayName,user_email:req.user.email,email_status:"verified"} 
+      const detail= {user_name:req.user.displayName,user_email:req.user.email,email_status:"verified",product_id:[],product_price:[], product_quantity:[],} 
       
   const usr = new schema(detail);
    const adnew = await usr.save();
@@ -288,22 +288,21 @@ app.post("/fov",async(req,res)=>{
   }
   })
 
-
-
    app.get("/user_logged_in",isLoggedIn,(req,res)=>{
 
-    if(!useremail)
+     if(useremail==0)
     {
     
       res.redirect("/");
     }
    else{
+
         res.render("homepage",{email:useremail});
    }
    })   
     app.get("/scan_product_storing",isLoggedIn,(req,res)=>{
       
-      if(!useremail)
+      if(useremail==0)
       {
       
         res.redirect("/");
@@ -315,24 +314,39 @@ app.post("/fov",async(req,res)=>{
   })
   app.post("/product_storing",isLoggedIn, async(req,res)=>{
    
-    if(!useremail)
+    if(useremail==0)
     {
     
       res.redirect("/");
     }
+else{
+    let id  = req.body.product_id;
+    id = JSON.parse(id);
+    let price  = req.body.product_price;
+    price = JSON.parse(price);
+    let quantity = req.body.product_quantity;
+    quantity = JSON.parse(quantity);
+    let data = await schema.findOne({user_email:useremail})
+    console.log(id[1])
+    data.product_id.push(id)
+    data.product_price.push(price)
+    data.product_quantity.push(quantity)
     
-   const data= await schema.updateOne({user_email:useremail},{ product_id:req.body.id,product_price :req.body.price, product_quantity : req.body.quantity});
-     res.send(data) // res.redirect("/scan_product_storing")
-    
+  const data2= await schema.updateOne({user_email:useremail},{ product_id:data.product_id,product_price:data.product_price, product_quantity:data.product_quantity})
+      res.send(data);
+   console.log(data);// res.redirect("/scan_product_storing")
+}
+ 
 })
+
   
 
 
 
 app.get("/scan_product_selling",isLoggedIn, (req,res)=>{
 
-  if(!useremail)
-{
+  if(useremail==0)
+  {
 
   res.redirect("/");
 }
@@ -341,21 +355,22 @@ app.get("/scan_product_selling",isLoggedIn, (req,res)=>{
 
 })
 app.post("/scan_product_selling",isLoggedIn, async(req,res)=>{
-  if(!useremail)
+  if(useremail==0)
   {
   
     res.redirect("/");
   }
   
   const product_id = req.body.id;
-  const product_peice = req.body.price;
-  const product_quantity = req.body.quantity;
-  // const db = await schema.findOne({ user_email: useremail});
-  // let i = db.count;
+  const product_price = req.body.price;
+  var product_quantity = req.body.quantity;
+  
 
-  await schema.updateOne({user_email:useremail},{ product_id:[req.body.id],product_price :[req.body.price], product_quantity : [req.body.quantity]});
+  let data =await schema.findOne({user_email:useremail});
+  product_quantity=data.product_quantity-req.body.quantity;
+  const data2= await schema.updateOne({user_email:useremail},{ product_id:req.product_quantity,product_price :req.body.price, product_quantity : req.body.quantity})
 
-  res.redirect("/scan_product_storing")
+  res.redirect("/store",{onedate:data2});
 
 })
  
