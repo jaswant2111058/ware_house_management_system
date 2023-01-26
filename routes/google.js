@@ -27,7 +27,7 @@ router.get("/googlelogin",isLoggedIn, async (req,res)=>{
     if(!semail)
     {
     try{
-      const detail= {user_name:req.user.displayName,user_email:req.user.email,email_status:"verified",product_id:[],product_price:[], product_quantity:[],} 
+      const detail= {user_name:req.user.displayName,user_email:req.user.email,email_status:"verified",product_detail:[]} 
       
   const usr = new schema(detail);
    const adnew = await usr.save();

@@ -3,6 +3,8 @@ const key="jassi"
 function isLoggedIn(req, res, next) {
  
     if(req.user) {
+
+    //req.email=req.user.email;
       next()
     } else
     {
@@ -11,8 +13,8 @@ function isLoggedIn(req, res, next) {
         if (token) {
           let user = jwt.verify(token,key);
           if (user) {
-            req.userid = user.id;
-            req.useremail = user.email;
+            req.id = user.id;
+            req.email = user.email;
             
             next();
           }

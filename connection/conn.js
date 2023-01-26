@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true)
 
-mongoose.connect('mongodb+srv://cluster0:8766263593%40Jk@cluster0.tjqmln6.mongodb.net/jassi',
-
+mongoose.connect(process.env.DBCONNECTION,
 ).then(()=> console.log("connected ...."))
 .catch(()=>console.log("not connected"));

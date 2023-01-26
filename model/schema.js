@@ -9,23 +9,18 @@ const userschema=new mongoose.Schema({
        unique:[true,"email already exist"]
     },
     email_status:{
-        type:String
+        type:Boolean
     },
     password:{
         type:String,
        
     },
 
-    product_id:{
+    product_detail:{
         type:Array,
         
          },
-    product_price:{
-        type:Array,
-    },
-    product_quantity:{
-        type:Array,
-    }
+    
     
 });
 const usr= new mongoose.model("Data_base",userschema);

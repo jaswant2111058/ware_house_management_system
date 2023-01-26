@@ -71,7 +71,7 @@ router.post("/otpverification",async(req,res)=>{
      console.log(req.otp)
     if(req.otp==req.body.otp)
     {
-      await schema.updateOne({user_email:req.body.email},{email_status:"verified"});
+      await schema.updateOne({user_email:req.body.email},{email_status:true,product_detail:["all ok"]});
       res.redirect("/")
     }
     else
@@ -92,7 +92,7 @@ try {
     const lpassword = req.body.password
 
     const semail = await schema.findOne({ user_email: lemail })
-    if(semail&& semail.email_status==="verified")
+    if(semail&& semail.email_status===true)
     {
    // res.send(semail)
 
