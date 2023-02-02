@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <style>
+        body{
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .basicForm{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid;
+            padding: 80px 20px;
+            border-radius: 10px;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            
+        }
+        form>input{
+            padding: 10px;
+            margin: 10px;
+            font-size: 1.5rem;
+            width: 20vw;
+            border-radius: 10px;
+        }
+        button{
+            font-size: 1.2rem;
+            background-color: black;
+            color: aliceblue;
+            padding: 10px;
+            width: 70%;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        span{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<div class="basicForm">
+    <form action="/login" method="post">
+        <!-- <img src="https://drive.google.com/uc?export=view&id=180FNCUjTHP0MGOQFW5rf8-AVOppWdJdK  " height="20px " width="20px"> -->
+          
+            
+            <input type="text" id="email" name="email" placeholder="Email" required>
+            
+            <input type="text" id="password" name="password" placeholder="password" required>
+            
+            <button  id="button" type="submit"> Login </button>
+            </form>
+            <span>
+                <button id ="log1" onclick="window.location.href='/auth/google'">Google</button>
+    
+                <button id ="log1" onclick="window.location.href='/signup'">SIGNUP</button>
+            
+            </span>
+            
+            <button id ="log1" onclick="window.location.href='/forgetpassword'">Forget password</button>
+    
+</div>
+   </body>
+</html>

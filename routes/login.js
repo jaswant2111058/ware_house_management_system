@@ -4,12 +4,12 @@ const schema = require("../model/schema")
 const session = require('express-session');
 router.use(express.json());
 router.use(express.urlencoded({extended:false}));
-const cookiejk = require("cookie-parser");
+const cookie = require("cookie-parser");
 const bodyParser= require("body-parser")
 const jwt = require("jsonwebtoken");
 const key = process.env.SESSION_SECRET;
 const time = 1000*15*60;
-router.use(cookiejk());
+router.use(cookie());
 router.use(bodyParser.urlencoded({ extended: true }));
 const sendmail = require("../nodemailer/mailer")
 const otp =""
@@ -32,35 +32,33 @@ res.render("signup")
 //signup post
 
 router.post('/signup',async(req,res)=>{
-const pass = req.body.password;
-const repass= req.body.repassword;
-//const adnew= schema.findOne(res.body.email)
-if(pass===repass)
-{
-  const detail ={ user_email:req.body.email,password:pass,user_name:req.body.username,email_status:"notverified"}
- 
-  try{
+      
+//
+try{
+  const email=await schema.findOne({email:req.body.email})
+  console.log(email)
+  if(email){
+      res.send("email is all ready register"+"<html><br><br><a href='/'>return<a></html>")
+  }
+  else{
+  const pass = req.body.password;
+  const otp=sendmail(req.body.email);
+  const detail ={email:req.body.email,password:pass,name:req.body.username,email_status:false,otp:otp}
+  
     const usr= new schema(detail)
     const adnew = await usr.save();
-    //req.otp=sendmail(req.body.email);
   
-    //res.render("otpverification",{email:req.body.email})
-   // console.log(req.otp)
-    res.send("yes")
+    res.render("otpverification",{email:req.body.email})
+    console.log(otp)
+   // res.send("yes")
+  }
      }
   catch
   {
-    res.status(400).send("email is all ready register"+"<html><br><br><a href='/'>return<a></html>");
+    res.status(400).send("something went wrong"+"<html><br><br><a href='/'>return<a></html>");
   }
 
  
-}
-
-else{
-  res.send("entered password is not matching"+"<html><br><br><a href='/'>return<a></html>")
-  }
-  
-   
 })
 
 
@@ -68,10 +66,11 @@ else{
 
 router.post("/otpverification",async(req,res)=>{
 
-     console.log(req.otp)
-    if(req.otp==req.body.otp)
+
+  const email= await schema.findOne({email:req.body.email})
+    if(email.otp==req.body.otp)
     {
-      await schema.updateOne({user_email:req.body.email},{email_status:true,product_detail:["all ok"]});
+      await schema.updateOne({email:req.body.email},{email_status:true,product_detail:[]});
       res.redirect("/")
     }
     else
@@ -91,12 +90,10 @@ try {
     const lemail = req.body.email
     const lpassword = req.body.password
 
-    const semail = await schema.findOne({ user_email: lemail })
+    const semail = await schema.findOne({ email: lemail })
     if(semail&& semail.email_status===true)
     {
-   // res.send(semail)
-
-   // const pcheck = await bcrypt.compare(lpassword, semail.password)
+   
 
     if (lpassword!=semail.password) {
 
@@ -104,11 +101,10 @@ try {
     }
     else {
             const token = jwt.sign({email:semail.email,id:semail._id},key)
-             res.cookie("token", token, {
+            res.cookie("token", token, {
             expires: new Date(Date.now() + time),
               httpOnly: true})
               console.log(token);
-              useremail=lemail;
               res.redirect("/user_logged_in")    
     }
   }
@@ -134,14 +130,15 @@ res.render("forgetpassword");
 // forget password post
 
 router.post("/forgetpassword",async(req,res)=>{
-const semail = await schema.findOne({ user_email: req.body.email })
+const semail = await schema.findOne({ email: req.body.email })
 if(!semail)
 {
 res.send("Email is not register"+"<html><br><br><a href='/'>signup<a></html>")
 }
 else
 {
-  sendmail(req.body.email);
+  const otp = sendmail(req.body.email);
+  await schema.updateOne({email:req.body.email },{otp:otp})
 
 res.render("fov",{email:req.body.email})
 }
@@ -154,16 +151,18 @@ res.render("fov",{email:req.body.email})
 router.post("/fov",async(req,res)=>{
 
      
-if(otp===req.body.otp)
-{
-await schema.updateOne({user_email:req.body.email},{password:req.body.password});
-res.redirect("/")
-}
-else
-{
-res.send("otp is not matching"+"<html><br><br><a href='/'>signup<a></html>")
+  const email= schema.findOne(req.body.email)
+  if(email.otp==req.body.otp)
+  {
+    await schema.updateOne({email:req.body.email},{email_status:true,password:req.body.password});
+    res.redirect("/")
+  }
+  else
+  {
+    res.send("otp is not matching")
 
-}
+  }
+
 
 })
 

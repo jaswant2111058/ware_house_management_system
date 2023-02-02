@@ -1,10 +1,10 @@
 const mongoose=require("mongoose");
 
 const userschema=new mongoose.Schema({
-    user_name:{
+    name:{
         type:String,
     },
-    user_email:{
+    email:{
         type:String,
        unique:[true,"email already exist"]
     },
@@ -13,15 +13,16 @@ const userschema=new mongoose.Schema({
     },
     password:{
         type:String,
-       
+    },
+    otp:{
+        type:String,
+        timestamps:true
     },
 
     product_detail:{
         type:Array,
-        
          },
-    
-    
+    createdAt:{type:Date,default:Date.now,index:{expires:30}}
 });
 const usr= new mongoose.model("Data_base",userschema);
 module.exports=usr;

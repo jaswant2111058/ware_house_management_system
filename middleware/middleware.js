@@ -4,7 +4,7 @@ function isLoggedIn(req, res, next) {
  
     if(req.user) {
 
-    //req.email=req.user.email;
+    req.email=req.user.email;
       next()
     } else
     {

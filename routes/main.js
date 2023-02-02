@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const schema = require("../model/schema")
+const schema = require("../model/storing")
 const isLoggedIn = require("../middleware/middleware")
 
 
@@ -8,7 +8,7 @@ router.get("/user_logged_in",isLoggedIn,(req,res)=>{
 
     
 
-       res.render("homepage",{email:useremail});
+       res.render("homepage",{email:req.email});
   
   })  
   
@@ -24,24 +24,15 @@ router.get("/user_logged_in",isLoggedIn,(req,res)=>{
   
  //  try{
       const detail = req.body.detail;
-   let data = await schema.findOne({user_email:useremail})
+   let data = await schema.findOne({email:req.email})
    
    data = detail.concat(data.product_deatil);
- const data2= await schema.updateOne({user_email:useremail},{ user_name:"ojassi"})
-     res.send(req.email);
-  console.log(data);// res.redirect("/scan_product_storing")
-    // }
-    // catch{
-    //  res.status(400).send("error") 
-    //   }
-
+ const data2= await schema.updateOne({email:req.email},{product_deatil:data})
+     res.redirect("/scan_product_storing");
+  console.log(data);
 })
 
-
 router.get("/scan_product_selling",isLoggedIn, (req,res)=>{
-
- 
-
    res.render("selling",{email:req.email});
 
 

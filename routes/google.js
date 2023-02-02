@@ -1,7 +1,7 @@
 const express =  require("express");
 const router = express.Router();
 const passport = require('passport');
-const schema = require("../model/schema")
+const schema = require("../model/storing")
 const session = require('express-session');
 const isLoggedIn = require("../middleware/middleware")
 require("../auth")
@@ -27,7 +27,7 @@ router.get("/googlelogin",isLoggedIn, async (req,res)=>{
     if(!semail)
     {
     try{
-      const detail= {user_name:req.user.displayName,user_email:req.user.email,email_status:"verified",product_detail:[]} 
+      const detail= {user_name:req.user.displayName,user_email:req.user.email,email_status:true,product_detail:[]} 
       
   const usr = new schema(detail);
    const adnew = await usr.save();
